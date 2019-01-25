@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private var observable: Observable<String>? = null
     private var observer: Observer<String>? = null
+    private var disposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSubscribe(d: Disposable) {
+                disposable = d
             }
 
             override fun onNext(t: String) {
@@ -47,5 +49,12 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = MainActivity::class.qualifiedName
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        //if activity gets killed then observer un-subscribed to observable
+        disposable?.dispose()
     }
 }

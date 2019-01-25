@@ -6,6 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +26,11 @@ class MainActivity : AppCompatActivity() {
         observable
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
+                ?.filter(object : Predicate<String> {
+                    override fun test(t: String): Boolean {
+                        return t.contains("e")
+                    }
+                })
                 ?.subscribe(observer!!)
 
     }

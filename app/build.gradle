@@ -28,6 +28,14 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    //Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    //Constraint Layout
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 }
 repositories {
     mavenCentral()

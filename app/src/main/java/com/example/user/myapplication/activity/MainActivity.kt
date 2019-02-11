@@ -2,47 +2,36 @@ package com.example.user.myapplication.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
+import com.example.user.myapplication.activity.api.Api.Companion.BASE_URL
+import com.example.user.myapplication.activity.builder.RetrofitBuilder
+import com.example.user.myapplication.activity.interfaces.ApiInterface
+import com.example.user.sampleprojectwithkotlin.login.LoginData
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import retrofit2.Retrofit
 
 class MainActivity : AppCompatActivity() {
-
-
-    private var observable: Observable<String>? = null
-    private var observer: Observer<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        observable = Observable.just("a", "b", "c", "d", "e")
-
-        observer = getDataFromObserver()
-
+        var retrofit: Retrofit = RetrofitBuilder.getApi(BASE_URL)!!
+        var apiInterface: ApiInterface = retrofit.create(ApiInterface::class.java)
+        var observable: Observable<LoginData> = apiInterface.requestLogin("demo007@gmail.com", " Kannan123")
         observable
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe(observer!!)
-
+                ?.subscribe({ result ->
+                    showToastMessage(result.message)
+                }, { t ->
+                    showToastMessage(t.message)
+                })
     }
 
-    private fun getDataFromObserver(): Observer<String> {
-        return object : Observer<String> {
-            override fun onComplete() {
-            }
-
-            override fun onSubscribe(d: Disposable) {
-            }
-
-            override fun onNext(t: String) {
-            }
-
-            override fun onError(e: Throwable) {
-            }
-
-        }
+    private fun showToastMessage(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

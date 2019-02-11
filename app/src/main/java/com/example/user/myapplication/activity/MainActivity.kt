@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
         var apiInterface: ApiInterface = retrofit.create(ApiInterface::class.java)
         var observable: Observable<LoginData> = apiInterface.requestLogin("demo007@gmail.com", " Kannan123")
         observable
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribeOn(Schedulers.io())//schedulers.io to making network calls //subscribeon tells the observable to start the task on background thread
+                ?.observeOn(AndroidSchedulers.mainThread())//to update ui mainthread method // observeon to receive the data on ui thread
                 ?.subscribe({ result ->
                     showToastMessage(result.message)
                 }, { t ->

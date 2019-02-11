@@ -17,10 +17,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var retrofit: Retrofit = RetrofitBuilder.getApi(BASE_URL)!!
-        var apiInterface: ApiInterface = retrofit.create(ApiInterface::class.java)
-        var observable: Observable<LoginData> = apiInterface.requestLogin("demo007@gmail.com", " Kannan123")
-        observable
+        hitLoginApi();
+    }
+
+    private fun hitLoginApi() {
+        RetrofitBuilder.getApi()!!.create(ApiInterface::class.java).requestLogin("demo007@gmail.com", " Kannan123")
                 ?.subscribeOn(Schedulers.io())//schedulers.io to making network calls //subscribeon tells the observable to start the task on background thread
                 ?.observeOn(AndroidSchedulers.mainThread())//to update ui mainthread method // observeon to receive the data on ui thread
                 ?.subscribe({ result ->

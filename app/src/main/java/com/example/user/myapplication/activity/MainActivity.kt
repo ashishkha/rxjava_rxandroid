@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         RetrofitBuilder.getApi()!!.create(ApiInterface::class.java).requestLogin("demo007@gmail.com", " Kannan123")
                 ?.subscribeOn(Schedulers.io())//schedulers.io to making network calls //subscribeon tells the observable to start the task on background thread
                 ?.observeOn(AndroidSchedulers.mainThread())//to update ui mainthread method // observeon to receive the data on ui thread
+                ?.doOnError { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
                 ?.subscribe({ result ->
                     showToastMessage(result.message)
                 }, { t ->
